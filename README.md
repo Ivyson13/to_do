@@ -11,7 +11,7 @@ Esta é uma aplicação simples de lista de tarefas (To-Do List) construída com
 ## Tecnologias Utilizadas
 
 - Frontend: React
-- Backend: Node.js
+- Backend: Java
 - Banco de Dados: PostgreSQL
 - Containerização: Docker
 - Orquestração de Contêineres: Kubernetes
