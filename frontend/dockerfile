@@ -1,0 +1,32 @@
+# Usar uma imagem base do Node.js 20.14.0 com Alpine
+FROM node:20.14.0-alpine
+
+# Definir o diretório de trabalho
+WORKDIR /app
+
+# Copiar o arquivo package.json e package-lock.json
+COPY package*.json ./
+
+# Instalar as dependências
+RUN npm install
+
+# Copiar todo o código fonte para o diretório de trabalho
+COPY . .
+
+# Definir NODE_ENV como produção por padrão, caso não seja definido
+ARG NODE_ENV=production
+
+# Copiar o arquivo de ambiente correto baseado na variável de ambiente NODE_ENV
+RUN if [ -f ".env.${NODE_ENV}" ]; then cp ".env.${NODE_ENV}" .env; else echo "NODE_ENV=${NODE_ENV}" > .env; fi
+
+# Compilar a aplicação para produção
+RUN npm run build
+
+# Instalar o servidor HTTP para servir o aplicativo compilado
+RUN npm install -g serve
+
+# Informar qual porta o servidor vai usar
+EXPOSE 5000
+
+# Comando para servir a aplicação
+CMD ["serve", "-s", "build", "-l", "5000"]
